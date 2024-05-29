@@ -12,10 +12,13 @@ on:
 env:
   AWS_KEY: ${{ vars.AWS_KEY }}
   AWS_SECRET: ${{ vars.AWS_SECRET}}
+  AWS_REGION: us-east-1
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch: yes
-
+permissions:
+      id-token: write   # This is required for requesting the JWT
+      contents: read    # This is required for actions/checkout
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -29,9 +32,16 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo "$AWS_KEY and $AWS_SECRET and $CI_ENVIRONMENT_NAME"
-      - name: Reused steps
-        uses: ./.github/my-custom-action/
-  
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1.7.0
+        with:
+          role-to-assume: arn:aws:iam::992382611445:role/GitHubAction-AssumeRoleWithAction
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+      # Hello from AWS: WhoAmI
+      - name: Sts GetCallerIdentity
+        run: |
+          aws sts get-caller-identity 
   deploy:
     runs-on: ubuntu-latest
     environment: production
