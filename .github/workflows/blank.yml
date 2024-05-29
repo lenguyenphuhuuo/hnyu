@@ -40,7 +40,7 @@ jobs:
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity 
-          echo $AWS_SESSION_TOKEN
+          aws s3 ls
   deploy:
     runs-on: ubuntu-latest
     environment: production
