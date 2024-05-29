@@ -10,8 +10,6 @@ on:
   pull_request:
     branches: [ "main" ]
 env:
-  AWS_KEY: ${{ vars.AWS_KEY }}
-  AWS_SECRET: ${{ vars.AWS_SECRET}}
   AWS_REGION: us-east-1
 
   # Allows you to run this workflow manually from the Actions tab
@@ -42,6 +40,7 @@ jobs:
       - name: Sts GetCallerIdentity
         run: |
           aws sts get-caller-identity 
+          echo $AWS_SESSION_TOKEN
   deploy:
     runs-on: ubuntu-latest
     environment: production
