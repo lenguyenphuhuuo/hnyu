@@ -30,7 +30,7 @@ jobs:
       - name: Run a one-line script
         run: echo "$AWS_KEY and $AWS_SECRET and $CI_ENVIRONMENT_NAME"
       - name: Reused steps
-        uses: ./.github/my-custom-action
+        uses: ./.github/my-custom-action.yml
   
   deploy:
     runs-on: ubuntu-latest
