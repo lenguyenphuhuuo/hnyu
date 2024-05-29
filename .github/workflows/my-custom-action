@@ -1,0 +1,7 @@
+name: 'Show script'
+description: 'An example action'
+runs:
+  using: 'composite'
+  steps:
+    - name: Show the variable
+      run: echo "The $AWS_KEY and $AWS_SECRET"
